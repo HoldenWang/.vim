@@ -96,3 +96,9 @@ set paste
 " map tn :tabn<CR> gT gt
 "
 set showmatch  "高亮显示(set noshowmatch不显示){, }, (, ), [, 或者 ] 的匹配情况
+
+" Uncomment the following to have Vim jump to the last position when       
+" reopening a file                                                         
+if has("autocmd")                                                          
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif                                                        
+endif 
