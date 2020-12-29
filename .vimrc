@@ -102,7 +102,35 @@ set showmatch  "高亮显示(set noshowmatch不显示){, }, (, ), [, 或者 ] �
 if has("autocmd")                                                          
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif                                                        
 endif 
+” 自动切换目录，便于向上查找tags文件
+set autochdir
 " set tags files locations
 set tags+=/usr/lib/python3.6/tags,tags;
 " run ctags command to product tags file
-map <C-r> :!ctags -R <CR><CR>  
+map <C-r> :call Go_top()<CR>:!ctags -R $(pwd)<CR><CR>:call Go_curr()<CR>
+func! Go_top()
+" 回到项目的top目录
+    wall
+    let g:Curr_dir=getcwd()
+    let i = 1
+    while i<10
+        if filereadable("README.md")
+            return
+        else
+            cd ..
+            let i += 1
+        endif
+    endwhile
+    exec 'cd'.g:Curr_dir
+    ":!ctags -R '.g:Curr_dir
+    return g:Curr_dir
+endfunc
+
+func! Go_curr()
+    " 回到当前目录
+    exec 'cd'.g:Curr_dir
+endfunc
+" 自动折叠python代码
+set foldmethod=indent
+nnoremap <space> za
+vnoremap <space> zf
