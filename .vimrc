@@ -102,3 +102,7 @@ set showmatch  "高亮显示(set noshowmatch不显示){, }, (, ), [, 或者 ] �
 if has("autocmd")                                                          
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif                                                        
 endif 
+" set tags files locations
+set tags+=/usr/lib/python3.6/tags,tags;
+" run ctags command to product tags file
+map <C-r> :!ctags -R <CR><CR>  
